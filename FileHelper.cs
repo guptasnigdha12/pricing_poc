@@ -13,10 +13,11 @@ public class FileHelper
     static FileHelper()
     {
         // Define your managed identity's Client ID (User-Assigned Managed Identity)
-        //var managedIdentityClientId = "5464b679-7cff-4d9f-90ed-878618edb430"; // Replace with your MI's Client ID
+        var managedIdentityClientId = "d083f37c-d0cd-4a0e-a50f-1cb292985688"; // Replace with your MI's Client ID
 
         // Use Managed Identity with specific Client ID
-        var credential = new DefaultAzureCredential();
+        var credential = new ManagedIdentityCredential(managedIdentityClientId);
+
         // Construct Blob Service Client using Managed Identity
         var blobServiceClient = new BlobServiceClient(new Uri("https://guptasnigdhatest.blob.core.windows.net"), credential);
 
