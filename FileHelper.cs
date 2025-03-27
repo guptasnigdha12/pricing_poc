@@ -17,7 +17,6 @@ public class FileHelper
 
         // Use Managed Identity with specific Client ID
         var credential = new ManagedIdentityCredential(managedIdentityClientId);
-
         // Construct Blob Service Client using Managed Identity
         var blobServiceClient = new BlobServiceClient(new Uri("https://guptasnigdhatest.blob.core.windows.net"), credential);
 

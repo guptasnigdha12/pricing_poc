@@ -1,17 +1,75 @@
-﻿public static class AppSettings
+﻿using System;
+using System.Collections.Generic;
+
+public static class AppSettings
 {
-    public const string ApiBaseUrl = "https://prices.azure.com/api/retail/prices";        
-    public const string ContainerName = "pricing"; // The Blob Container Name
-    public static readonly List<(string Name, string Query)> Skus = new()
+    public const string ApiBaseUrl = "https://prices.azure.com/api/retail/prices?";
+    public const string ApiVersion = "api-version=2023-01-01-preview";
+    public const string ContainerName = "pricing";
+
+    public static readonly Dictionary<ServiceFamily, string> ServiceFamilyDescriptions = new()
     {
-        ("SQL_Managed_Instance_Compute", "$filter=serviceName eq 'SQL Managed Instance' and meterName eq 'vCore' and armRegionName eq 'westus'"),
-        ("SQL_Managed_Instance_License", "$filter=serviceName eq 'SQL Managed Instance' and meterName eq 'vCore' and armRegionName eq 'Global'"),
-        ("Azure_SQL_DB_Compute", "$filter=serviceName eq 'SQL Database' and meterName eq 'vCore' and armRegionName eq 'westus'"),
-        ("Azure_SQL_DB_License", "$filter=serviceName eq 'SQL Database' and meterName eq 'vCore' and armRegionName eq 'Global'"),
-        ("SQL_VM_Compute", "$filter=serviceFamily eq 'Compute' and armRegionName eq 'westus'"),
-        ("SQL_VM_Storage", "$filter=serviceFamily eq 'Storage' and armRegionName eq 'westus'"),
-        ("SQL_MI_Storage", "$filter=serviceName eq 'SQL Managed Instance' and armRegionName eq 'westus' and unitOfMeasure eq '1 GB/Month'"),
-        ("SQL_DB_Storage", "$filter=serviceName eq 'SQL Database' and armRegionName eq 'westus' and unitOfMeasure eq '1 GB/Month'"),
-        ("Azure_Hybrid_Benefit", "$filter=serviceName eq 'Virtual Machines Licenses' and armRegionName eq 'Global' and productName eq 'Azure Hybrid Benefit for SQL Server'")
+        { ServiceFamily.Compute, "Compute" },
+        { ServiceFamily.Storage, "Storage" }
     };
+
+    public static readonly Dictionary<ServiceName, string> ServiceNameDescriptions = new()
+    {
+        { ServiceName.SQLManagedInstance, "SQL Managed Instance" },
+        { ServiceName.SQLDatabase, "SQL Database" },
+        { ServiceName.VirtualMachinesLicenses, "Virtual Machines Licenses" }
+    };
+
+    public static readonly Dictionary<Location, string> LocationDescriptions = new()
+    {
+        { Location.WestUS, "westus" },
+        { Location.Global, "Global" }
+    };
+
+    public static readonly Dictionary<UploadFiles, string> UploadFileNames = new()
+    {
+        { UploadFiles.SQLMICompute, "SQL_MI_Compute.json" },
+        { UploadFiles.SQLMILicense, "SQL_MI_License.json" },
+        { UploadFiles.SQLDBCompute, "SQL_DB_Compute.json" },
+        { UploadFiles.SQLDBLicense, "SQL_DB_License.json" },
+        { UploadFiles.SQLVMCompute, "SQL_VM_Compute.json" },
+        { UploadFiles.SQLVMStorage, "SQL_VM_Storage.json" },
+        { UploadFiles.SQLMIStorage, "SQL_MI_Storage.json" },
+        { UploadFiles.SQLDBStorage, "SQL_DB_Storage.json" },
+        { UploadFiles.AzureHybridBenefit, "Azure_Hybrid_Benefit.json" }
+    };
+
+    public static readonly Dictionary<QueryKey, string> QueryKeyDescriptions = new()
+    {
+        { QueryKey.ServiceName, "serviceName" },
+        { QueryKey.ServiceFamily, "serviceFamily" },
+        { QueryKey.MeterName, "meterName" },
+        { QueryKey.ArmRegionName, "armRegionName" },
+        { QueryKey.UnitOfMeasure, "unitOfMeasure" },
+        { QueryKey.ProductName, "productName" }
+    };
+
+    public static readonly Dictionary<UnitOfMeasure, string> UnitOfMeasureDescriptions = new()
+    {
+        { UnitOfMeasure.OneGBMonth, "1 GB/Month" }
+    };
+
+    public static readonly Dictionary<MeterName, string> MeterNameDescriptions = new()
+    {
+        { MeterName.vCore, "vCore" }
+    };
+
+    public static readonly Dictionary<ProductName, string> ProductNameDescriptions = new()
+    {
+        { ProductName.AzureHybridBenefit, "Azure Hybrid Benefit for SQL Server" }
+    };
+
+    public enum ServiceFamily { Compute, Storage }
+    public enum ServiceName { SQLManagedInstance, SQLDatabase, VirtualMachinesLicenses }
+    public enum Location { WestUS, Global }
+    public enum UploadFiles { SQLMICompute, SQLMILicense, SQLDBCompute, SQLDBLicense, SQLVMCompute, SQLVMStorage, SQLMIStorage, SQLDBStorage, AzureHybridBenefit }
+    public enum QueryKey { ServiceName, ServiceFamily, MeterName, ArmRegionName, UnitOfMeasure, ProductName }
+    public enum UnitOfMeasure { OneGBMonth }
+    public enum MeterName { vCore }
+    public enum ProductName { AzureHybridBenefit }
 }

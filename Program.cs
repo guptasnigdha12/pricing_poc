@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,14 +7,16 @@ class Program
 {
     static async Task Main()
     {
-        Console.WriteLine("Starting Azure Pricing Job...");        
+        Console.WriteLine("Starting Azure Pricing Job...");
 
         var service = new PricingService();
-        var tasks = AppSettings.Skus.Select(async sku =>
+        var queries = QueryBuilder.GenerateQueries();
+
+        var tasks = queries.Select(async query =>
         {
-            var data = await service.FetchPricingDataAsync(sku.Query);
-            string jsonData = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
-            await FileHelper.SaveJsonToBlobAsync(sku.Name, jsonData);
+            var pricingData = await service.FetchPricingDataAsync(query.Value); // API call
+            string jsonData = JsonSerializer.Serialize(pricingData, new JsonSerializerOptions { WriteIndented = true });
+            await FileHelper.SaveJsonToBlobAsync(query.Key, jsonData); // Save structured data
         });
 
         await Task.WhenAll(tasks); // Run API calls in parallel

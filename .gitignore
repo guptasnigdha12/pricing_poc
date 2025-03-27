@@ -1,0 +1,32 @@
+# Ignore Visual Studio and Rider specific files
+.vs/
+.idea/
+*.suo
+*.user
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+
+# Ignore user-specific and temporary files
+*.tmp
+*.log
+*.cache
+*.config
+
+# Ignore compiled code
+*.dll
+*.exe
+*.pdb
+
+# Ignore coverage and test result files
+TestResults/
+.coverage
+
+# Ignore environment settings
+.env
